@@ -20,7 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\" />
+    <Folder Include="Mapping\" />
     <Folder Include="Services\" />
+    <Folder Include="Validation\" />
   </ItemGroup>
 
 </Project>
