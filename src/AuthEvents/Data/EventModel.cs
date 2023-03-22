@@ -1,12 +1,10 @@
-using System.Text.Json;
+namespace AuthEvents.Data;
 
-namespace AuthEvents.Domain;
-
-public record Event
+public record EventModel
 {
     public long Id { get; set; }
     public Guid UserId { get; set; }
-    public EventType EventType { get; set; }
+    public string EventType { get; set; } = default!;
     public DateTime TimeFired { get; set; }
     public string Payload { get; set; } = default!;
 };

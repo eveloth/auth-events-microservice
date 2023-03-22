@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>8d2beee2-260e-4447-bf4e-3f7f79dec490</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,13 +16,16 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="FluentValidation" Version="11.5.1" />
+    <PackageReference Include="Mapster" Version="7.3.0" />
     <PackageReference Include="Npgsql" Version="7.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\Queries\" />
+    <Folder Include="Contracts\Responses\" />
     <Folder Include="Endpoints\" />
-    <Folder Include="Mapping\" />
     <Folder Include="Services\" />
     <Folder Include="Validation\" />
   </ItemGroup>

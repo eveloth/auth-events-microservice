@@ -2,6 +2,6 @@ namespace AuthEvents.Domain;
 
 public enum EventType
 {
-    SignIn,
-    SignOut
+    SignIn = 0,
+    SignOut = 1
 }
