@@ -10,6 +10,6 @@ public interface ISqlDataAccess
         CancellationToken ct
     );
 
-    Task<TResult> LoadScalar<TResult>(string sql, CancellationToken ct);
+    Task<TResult> LoadScalar<TResult>(string sql, DynamicParameters parameters, CancellationToken ct);
     Task<TModel> SaveData<TModel>(string sql, DynamicParameters parameters, CancellationToken ct);
 }

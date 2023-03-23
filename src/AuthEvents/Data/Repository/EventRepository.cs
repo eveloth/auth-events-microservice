@@ -46,10 +46,21 @@ public class EventRepository : IEventRepository
         return (await _db.SaveData<EventModel>(sql, parameters, ct)).Id;
     }
 
-    public async Task<int> Count(CancellationToken ct)
+    public async Task<int> Count(
+        CancellationToken ct,
+        TimeFilter? timeFilter = null,
+        EventFilter? eventFilter = null,
+        PaginationFilter? paginationFilter = null
+    )
     {
-        const string sql = "select count(*) from event";
+        var sql = QueryBuilder
+            .Create("select count(*) from event")
+            .ApplyFilters(timeFilter, eventFilter, paginationFilter);
 
-        return await _db.LoadScalar<int>(sql, ct);
+        var parameters = new DynamicParameters(timeFilter);
+        parameters.AddDynamicParams(eventFilter);
+        parameters.AddDynamicParams(paginationFilter);
+
+        return await _db.LoadScalar<int>(sql, parameters, ct);
     }
 }

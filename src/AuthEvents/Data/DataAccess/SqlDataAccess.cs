@@ -27,12 +27,16 @@ public class SqlDataAccess : ISqlDataAccess
             ) ?? Enumerable.Empty<TModel>();
     }
 
-    public async Task<TResult> LoadScalar<TResult>(string sql, CancellationToken ct)
+    public async Task<TResult> LoadScalar<TResult>(
+        string sql,
+        DynamicParameters parameters,
+        CancellationToken ct
+    )
     {
         await using var connection = new NpgsqlConnection(_connectionStrings.Postgres);
 
         return await connection.ExecuteScalarAsync<TResult>(
-            new CommandDefinition(sql, cancellationToken: ct)
+            new CommandDefinition(sql, parameters, cancellationToken: ct)
         );
     }
 
