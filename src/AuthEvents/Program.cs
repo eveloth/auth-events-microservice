@@ -42,12 +42,9 @@ var app = builder.Build();
 
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-app.RunMigrations();
+app.ConfigureMapping();
 
-app.ConfigureRequestToDomainMapping();
-app.ConfigureDomainToModelMapping();
-app.ConfigureModelToDomainMapping();
-app.ConfigureDomainToDtoMapping();
+app.RunMigrations();
 
 app.UseSerilogRequestLogging();
 
