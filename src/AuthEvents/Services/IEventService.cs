@@ -13,4 +13,10 @@ public interface IEventService
     );
 
     Task<long> Add(Event newEvent, CancellationToken ct);
+    Task<long> Count(
+        CancellationToken ct,
+        TimeFilterQuery? timeFilterQuery = null,
+        EventFilterQuery? eventFilterQuery = null,
+        PaginationQuery? paginationQuery = null
+    );
 }

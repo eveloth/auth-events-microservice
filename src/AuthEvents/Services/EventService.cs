@@ -42,4 +42,25 @@ public class EventService : IEventService
 
         return await _eventRepository.Add(eventModel, ct);
     }
+
+    public async Task<long> Count(
+        CancellationToken ct,
+        TimeFilterQuery? timeFilterQuery = null,
+        EventFilterQuery? eventFilterQuery = null,
+        PaginationQuery? paginationQuery = null
+    )
+    {
+        var timeFilter = timeFilterQuery.Adapt<TimeFilterQuery?, TimeFilter?>();
+        var eventFilter = eventFilterQuery.Adapt<EventFilterQuery?, EventFilter?>();
+        var paginationFilter = paginationQuery.Adapt<PaginationQuery?, PaginationFilter?>();
+
+        var eventCount = await _eventRepository.Count(
+            ct,
+            timeFilter,
+            eventFilter,
+            paginationFilter
+        );
+
+        return eventCount;
+    }
 }
