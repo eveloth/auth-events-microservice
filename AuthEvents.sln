@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B739732F-1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthEvents.Tests", "test\AuthEvents.Tests\AuthEvents.Tests.csproj", "{C0EA7F25-B548-4F88-A746-27188E753098}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthEventsIntegration.Tests", "test\AuthEvents.IntegrationTests\AuthEventsIntegration.Tests.csproj", "{30F69600-4AFF-497F-B95C-1B5610B0BADE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +30,14 @@ Global
 		{C0EA7F25-B548-4F88-A746-27188E753098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0EA7F25-B548-4F88-A746-27188E753098}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0EA7F25-B548-4F88-A746-27188E753098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30F69600-4AFF-497F-B95C-1B5610B0BADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30F69600-4AFF-497F-B95C-1B5610B0BADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30F69600-4AFF-497F-B95C-1B5610B0BADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30F69600-4AFF-497F-B95C-1B5610B0BADE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7C6520CE-20B2-4CE9-A6A7-5B2394E87771} = {1FDF4C70-8A4E-4E6A-B0BF-218F67D81FA3}
 		{C0EA7F25-B548-4F88-A746-27188E753098} = {B739732F-1194-4A90-A02B-B140C83D3322}
+		{30F69600-4AFF-497F-B95C-1B5610B0BADE} = {B739732F-1194-4A90-A02B-B140C83D3322}
 	EndGlobalSection
 EndGlobal
