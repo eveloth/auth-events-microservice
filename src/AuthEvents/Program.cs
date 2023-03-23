@@ -19,6 +19,8 @@ builder.Services.Configure<ConnectionStringsOptions>(
     builder.Configuration.GetSection(ConnectionStringsOptions.ConnectionStrings)
 );
 
+builder.InstallFluentMigrator();
+
 builder.Services.AddScoped<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
@@ -39,6 +41,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+app.RunMigrations();
 
 app.ConfigureRequestToDomainMapping();
 app.ConfigureDomainToModelMapping();
