@@ -44,4 +44,11 @@ public class EventRepository : IEventRepository
         var parameters = new DynamicParameters(eventModel);
         return await _db.SaveData<EventModel>(sql, parameters, ct);
     }
+
+    public async Task<int> Count(CancellationToken ct)
+    {
+        const string sql = "select count(*) from event";
+
+        return await _db.LoadScalar<int>(sql, ct);
+    }
 }

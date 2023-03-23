@@ -11,4 +11,5 @@ public interface IEventRepository
         PaginationFilter? paginationFilter = null
     );
     Task<int> Add(EventModel eventModel, CancellationToken ct);
+    Task<int> Count(CancellationToken ct);
 }
