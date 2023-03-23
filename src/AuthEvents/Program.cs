@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using AuthEvents.Data.DataAccess;
 using AuthEvents.Data.Repository;
 using AuthEvents.Installers;
@@ -8,6 +9,8 @@ using AuthEvents.Services;
 using AuthEvents.Validation;
 using FluentValidation;
 using MapsterMapper;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Serilog;
 using IMapper = MapsterMapper.IMapper;
 
@@ -29,7 +32,12 @@ builder.Services.AddSingleton<IMapper, Mapper>();
 builder.Services.AddValidatorsFromAssemblyContaining<EventValidator>();
 
 builder.Services
-    .AddControllers()
+    .AddControllers(options =>
+    {
+        options.Conventions.Add(
+            new RouteTokenTransformerConvention(new ToSlugCaseTransformerConvention())
+        );
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -43,8 +51,14 @@ var app = builder.Build();
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
 app.ConfigureMapping();
-
 app.RunMigrations();
+
+app.UseForwardedHeaders(
+    new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    }
+);
 
 app.UseSerilogRequestLogging();
 
@@ -54,3 +68,18 @@ app.UseSwaggerUI();
 app.MapControllers();
 
 await app.RunAsync();
+
+public partial class Program { }
+
+public partial class ToSlugCaseTransformerConvention : IOutboundParameterTransformer
+{
+    public string? TransformOutbound(object? value)
+    {
+        return value is null
+            ? null
+            : ToSlugCaseTransformerRegex().Replace(value.ToString()!, "$1-$2").ToLower();
+    }
+
+    [GeneratedRegex("([a-z])([A-Z])")]
+    private static partial Regex ToSlugCaseTransformerRegex();
+}
