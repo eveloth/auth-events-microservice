@@ -1,0 +1,20 @@
+# DATABASE
+
+PG_PASS=''
+PG_DB='events_db'
+PG_USER='eventsdbuser'
+PG_DATA=''
+
+# OVERRIDE appsettings.json
+
+SERILOGOPTIONS__ENABLECONSOLE="true"
+SERILOG__MINIMUMLEVEL__DEFAULT='Information'
+SWAGGEROPTIONS__ENABLED="true"
+
+# API_HOST=127.0.0.1
+API_PORT=8080
+# POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+
+CONNECTIONSTRINGS__POSTGRES="Server=auth-events.postgres;Port=5432;Database=${PG_DB};User Id=${PG_USER};Password=${PG_PASS};"
+
