@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace AuthEvents.Domain;
 
 public record Event
