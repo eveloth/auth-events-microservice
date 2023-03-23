@@ -31,7 +31,7 @@ public class EventRepository : IEventRepository
         return await _db.LoadData<EventModel>(sql, parameters, ct);
     }
 
-    public async Task<int> Add(EventModel eventModel, CancellationToken ct)
+    public async Task<long> Add(EventModel eventModel, CancellationToken ct)
     {
         const string sql =
             @"insert into event
@@ -39,10 +39,11 @@ public class EventRepository : IEventRepository
             time_fired, payload)
             values
             (@UserId, @EventType,
-            @TimeFired, @Payload::json)";
+            @TimeFired, @Payload::json)
+            returning id";
 
         var parameters = new DynamicParameters(eventModel);
-        return await _db.SaveData<EventModel>(sql, parameters, ct);
+        return (await _db.SaveData<EventModel>(sql, parameters, ct)).Id;
     }
 
     public async Task<int> Count(CancellationToken ct)

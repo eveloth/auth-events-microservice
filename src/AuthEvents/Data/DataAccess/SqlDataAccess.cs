@@ -36,7 +36,7 @@ public class SqlDataAccess : ISqlDataAccess
         );
     }
 
-    public async Task<int> SaveData<TModel>(
+    public async Task<TModel> SaveData<TModel>(
         string sql,
         DynamicParameters parameters,
         CancellationToken ct
@@ -44,7 +44,7 @@ public class SqlDataAccess : ISqlDataAccess
     {
         await using var connection = new NpgsqlConnection(_connectionStrings.Postgres);
 
-        return await connection.ExecuteAsync(
+        return await connection.QuerySingleAsync<TModel>(
             new CommandDefinition(sql, parameters, cancellationToken: ct)
         );
     }
