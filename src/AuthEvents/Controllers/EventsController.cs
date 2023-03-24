@@ -32,7 +32,14 @@ namespace AuthEvents.Controllers
             _eventService = eventService;
         }
 
+        /// <summary>
+        /// Returns events according to provided filters
+        /// </summary>
+        /// <response code="200">Returns events according to provided filters</response>
+        /// <response code="400">If a validation error occured</response>
         [HttpGet]
+        [ProducesResponseType(typeof(PagedResponse<EventDto>), StatusCodes.Status200OK)]
+        [Produces("application/json")]
         public async Task<IActionResult> GetEvents(
             [FromQuery] PaginationQuery paginationQuery,
             CancellationToken ct,
@@ -67,7 +74,14 @@ namespace AuthEvents.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Adds an event to the database
+        /// </summary>
+        /// <response code="200">Adds an event to the database</response>
+        /// <response code="400">If a validation error occured</response>
         [HttpPost]
+        [ProducesResponseType(typeof(CreatedResponse), StatusCodes.Status200OK)]
+        [Produces("application/json")]
         public async Task<IActionResult> IngressEvent(EventRequest request, CancellationToken ct)
         {
             await _validator.ValidateAndThrowAsync(request, ct);

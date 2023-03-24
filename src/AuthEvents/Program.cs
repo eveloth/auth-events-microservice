@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using AuthEvents.Data.DataAccess;
@@ -60,7 +61,11 @@ builder.Services
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlCommentsFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlCommentsFileName));
+});
 
 var app = builder.Build();
 
@@ -92,6 +97,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseExceptionHandler();
+
 // Use exception logging middleware for better debugging experience
 app.UseMiddleware<ExceptionLoggingMiddleware>();
 
