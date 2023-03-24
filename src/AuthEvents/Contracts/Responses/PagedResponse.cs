@@ -4,6 +4,10 @@ namespace AuthEvents.Contracts.Responses;
 
 public record PagedResponse<T>
 {
+    public PagedResponse()
+    {
+
+    }
     public PagedResponse(IEnumerable<T> data, PaginationQuery pagination, long entitesCount)
     {
         Data = data;
@@ -12,9 +16,9 @@ public record PagedResponse<T>
         Total = entitesCount;
     }
 
-    public IEnumerable<T> Data { get; }
-    public int PageNumber { get; }
-    public int PageSize { get; }
-    public long Total { get; }
+    public IEnumerable<T> Data { get; init; }
+    public int PageNumber { get; init; }
+    public int PageSize { get; init; }
+    public long Total { get; init; }
     public int PagesTotal => (int)Math.Ceiling((double)Total / PageSize);
 }

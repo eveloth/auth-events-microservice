@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using AuthEvents.Data.DataAccess;
 using AuthEvents.Data.Repository;
+using AuthEvents.Data.Seeding;
 using AuthEvents.Installers;
 using AuthEvents.Mapping;
 using AuthEvents.Options;
@@ -16,24 +17,36 @@ using IMapper = MapsterMapper.IMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Serilog with optional console sink
 builder.InstallSerilog();
 
+// Use Options pattern for managing connection strings
 builder.Services.Configure<ConnectionStringsOptions>(
     builder.Configuration.GetSection(ConnectionStringsOptions.ConnectionStrings)
 );
 
+// Configure and add fluent migrator to the DI container
 builder.InstallFluentMigrator();
 
+// Add services
 builder.Services.AddScoped<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddSingleton<IMapper, Mapper>();
 
+// Add seeder for testing environment
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    builder.Services.AddScoped<Seeder>();
+}
+
+// Add validators using FluentValidation package
 builder.Services.AddValidatorsFromAssemblyContaining<EventValidator>();
 
 builder.Services
     .AddControllers(options =>
     {
+        // Apply transformer defined below
         options.Conventions.Add(
             new RouteTokenTransformerConvention(new ToSlugCaseTransformerConvention())
         );
@@ -53,6 +66,15 @@ Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 app.ConfigureMapping();
 app.RunMigrations();
 
+if (app.Environment.IsEnvironment("Testing"))
+{
+    using var scope = app.Services.CreateScope();
+
+    var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
+    await seeder.PrepareDatabase();
+}
+
+// This is useful for reverse proxy setup
 app.UseForwardedHeaders(
     new ForwardedHeadersOptions
     {
@@ -60,6 +82,7 @@ app.UseForwardedHeaders(
     }
 );
 
+// Default ASP.NET Core request logging is a bit too verbose; this provides us with simple informative logs
 app.UseSerilogRequestLogging();
 
 app.UseSwagger();
@@ -71,6 +94,7 @@ await app.RunAsync();
 
 public partial class Program { }
 
+// This transofmer transforms api routes to slug case, i.e. api/AccessControl -> api/access-control etc.
 public partial class ToSlugCaseTransformerConvention : IOutboundParameterTransformer
 {
     public string? TransformOutbound(object? value)
