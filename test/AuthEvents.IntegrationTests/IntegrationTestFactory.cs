@@ -3,6 +3,8 @@ using DotNet.Testcontainers.Containers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 
+// ReSharper disable ClassNeverInstantiated.Global
+
 namespace AuthEventsIntegration.Tests;
 
 public class IntegrationTestFactory<TProgram> : WebApplicationFactory<TProgram>, IAsyncLifetime
