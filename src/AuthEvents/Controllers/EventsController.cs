@@ -68,15 +68,14 @@ namespace AuthEvents.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IngressEvent(
-            EventRequest request,
-            CancellationToken ct
-        )
+        public async Task<IActionResult> IngressEvent(EventRequest request, CancellationToken ct)
         {
             await _validator.ValidateAndThrowAsync(request, ct);
 
             var newEvent = _mapper.Map<Event>(request);
             var eventId = await _eventService.Add(newEvent, ct);
+
+            _logger.LogInformation("Added new event ID {EventId}", eventId);
 
             return Ok(new CreatedResponse(eventId));
         }

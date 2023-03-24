@@ -5,6 +5,7 @@ using AuthEvents.Data.Repository;
 using AuthEvents.Data.Seeding;
 using AuthEvents.Installers;
 using AuthEvents.Mapping;
+using AuthEvents.Middleware;
 using AuthEvents.Options;
 using AuthEvents.Services;
 using AuthEvents.Validation;
@@ -19,6 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add Serilog with optional console sink
 builder.InstallSerilog();
+
+builder.Services.AddProblemDetails();
 
 // Use Options pattern for managing connection strings
 builder.Services.Configure<ConnectionStringsOptions>(
@@ -87,6 +90,10 @@ app.UseSerilogRequestLogging();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseExceptionHandler();
+// Use exception logging middleware for better debugging experience
+app.UseMiddleware<ExceptionLoggingMiddleware>();
 
 app.MapControllers();
 
