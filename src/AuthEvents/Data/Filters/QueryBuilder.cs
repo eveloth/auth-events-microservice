@@ -5,7 +5,9 @@ namespace AuthEvents.Data.Filters;
 public class QueryBuilder
 {
     private readonly StringBuilder _queryBuilder;
+    //If any filter was applied, there should be 'and' after 'where'
     private bool _anyFilterApplied = false;
+    //The same is with event filter
     private bool _eventFilterApplied = false;
 
     private QueryBuilder(string query)

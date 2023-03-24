@@ -32,8 +32,7 @@ public class EventService : IEventService
 
         var result = await _eventRepository.Get(ct, timeFilter, eventFilter, paginationFilter);
 
-        var events = _mapper.Map<IEnumerable<Event>>(result);
-        return events;
+        return _mapper.Map<IEnumerable<Event>>(result);
     }
 
     public async Task<long> Add(Event newEvent, CancellationToken ct)
@@ -54,13 +53,6 @@ public class EventService : IEventService
         var eventFilter = eventFilterQuery.Adapt<EventFilterQuery?, EventFilter?>();
         var paginationFilter = paginationQuery.Adapt<PaginationQuery?, PaginationFilter?>();
 
-        var eventCount = await _eventRepository.Count(
-            ct,
-            timeFilter,
-            eventFilter,
-            paginationFilter
-        );
-
-        return eventCount;
+        return await _eventRepository.Count(ct, timeFilter, eventFilter, paginationFilter);
     }
 }

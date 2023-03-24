@@ -8,5 +8,5 @@ public record EventRequest
     public Guid UserId { get; init; }
     public EventType EventType { get; init; }
     public DateTime TimeFired { get; init; }
-    public JsonElement Payload { get; init; } = default!;
+    public JsonElement Payload { get; init; }
 };

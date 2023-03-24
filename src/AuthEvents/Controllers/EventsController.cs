@@ -47,6 +47,9 @@ namespace AuthEvents.Controllers
             [FromQuery] EventFilterQuery? eventFilter
         )
         {
+            // It does the thing that I'd like model binding to do --
+            // initializes object with null if there are no query parameters of the givent set
+            // (represented by object fot convenience)
             timeFilter =
                 timeFilter?.StartDate is null & timeFilter?.EndDate is null ? null : timeFilter;
 
